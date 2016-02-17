@@ -54,16 +54,16 @@
 
             var loader = new THREE.JSONLoader();
             loader.load("http://threejs.org/examples/models/animated/horse.js", function (geometry) {
-                var material = new THREE.MeshBasicMaterial({
-                    transparent: true,
-                    color: 0x0000FF,
-                    opacity: 0.0,
-                });
-
-                mesh2 = new THREE.Mesh(geometry, material);
-
-
-                scene.add(mesh2);
+//                var material = new THREE.MeshBasicMaterial({
+//                    transparent: true,
+//                    color: 0x00FF00,
+//                    opacity: 0.5,
+//                });
+//
+//                mesh2 = new THREE.Mesh(geometry, material);
+//
+//
+//                scene.add(mesh2);
 
 
                 material = new THREE.MeshBasicMaterial({
@@ -112,10 +112,10 @@
 
             requestAnimationFrame(animate);
 
-            if(mesh2){
-                mesh2.rotation.y += 0.02;
+//            if(mesh2){
+//                mesh2.rotation.y += 0.02;
                 parentContainer.rotation.y += 0.02;
-            }
+//            }
 
             renderer.render(scene, camera);
 
