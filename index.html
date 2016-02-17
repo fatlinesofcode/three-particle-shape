@@ -45,9 +45,9 @@
             scene = new THREE.Scene();
 
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-            camera.position.z = 60;
+            camera.position.z = 200;
 
-            geometry = new THREE.BoxGeometry(200, 200, 200);
+            geometry = new THREE.BoxGeometry(100, 100, 100);
             material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
 
 
@@ -60,32 +60,38 @@
 
                         var boxSize = 0.2;
             var geometry2 = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+            console.log("63","init","init", geometry.vertices);
             var materialGreen = new THREE.MeshBasicMaterial({transparent: false,  color: 0x00FF00,  opacity: 0.4,  side: THREE.DoubleSide});
             var pitchSegments = 60;
             var radius = 16;
             var elevationSegments = pitchSegments/2;
-            for (var p = 0; p < pitchSegments; p++) {
-                var pitch = Math.PI * 2 * p / pitchSegments ;
-                for (var e = 0; e < elevationSegments; e++) {
-                    var elevation = Math.PI  * ((e / elevationSegments)-0.5)
-                    var particle = new THREE.Mesh(geometry2, materialGreen);
-
-
-                    parentContainer.add(particle);
-
-                    var dest = new THREE.Vector3();
-                    particle.position.z = dest.z = (Math.sin(pitch) * Math.cos(elevation)) * radius; //z pos in sphere
-                    particle.position.x = dest.x = (Math.cos(pitch) * Math.cos(elevation)) * radius; //x pos in sphere
-                    particle.position.y = dest.y = Math.sin(elevation) * radius; //y pos in sphere
-
-                }
+//            for (var p = 0; p < pitchSegments; p++) {
+//                var pitch = Math.PI * 2 * p / pitchSegments ;
+//                for (var e = 0; e < elevationSegments; e++) {
+//                    var elevation = Math.PI  * ((e / elevationSegments)-0.5)
+//                    var particle = new THREE.Mesh(geometry2, materialGreen);
+//
+//
+//                    parentContainer.add(particle);
+//
+//                    var dest = new THREE.Vector3();
+//                    particle.position.z = dest.z = (Math.sin(pitch) * Math.cos(elevation)) * radius; //z pos in sphere
+//                    particle.position.x = dest.x = (Math.cos(pitch) * Math.cos(elevation)) * radius; //x pos in sphere
+//                    particle.position.y = dest.y = Math.sin(elevation) * radius; //y pos in sphere
+//
+//                }
+//            }
+            var m = geometry.vertices;
+            for (var i = 0; i < m.length; i++) {
+                var particle = new THREE.Mesh(geometry2, materialGreen);
+                particle.position.x = m[i].x
+                particle.position.y = m[i].y
+                particle.position.z = m[i].z
+                parentContainer.add(particle);
+                
             }
 
-            var particle = new THREE.Mesh(geometry2, materialGreen);
-            parentContainer.add(particle);
-            particle.position.z = 1;
-            particle.position.x = 300;
-            particle.position.y = 300;
+
 
 
             renderer = new THREE.WebGLRenderer();
