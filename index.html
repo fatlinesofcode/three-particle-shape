@@ -34,7 +34,7 @@
     (function () {
 
         var scene, camera, renderer, stats;
-        var geometry, material, mesh, parentContainer;
+        var geometry, material, mesh, parentContainer, mesh2;
 
         initStats();
         init();
@@ -45,59 +45,55 @@
             scene = new THREE.Scene();
 
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-            camera.position.z = 200;
+            camera.position.z = 300;
 
-            geometry = new THREE.BoxGeometry(100, 100, 100);
-            material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
-
-
-
-            mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
 
             parentContainer = new THREE.Object3D();
+            parentContainer.position.y = -100;
             scene.add(parentContainer);
 
-                        var boxSize = 0.2;
-            var geometry2 = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
-            console.log("63","init","init", geometry.vertices);
-            var materialGreen = new THREE.MeshBasicMaterial({transparent: false,  color: 0x00FF00,  opacity: 0.4,  side: THREE.DoubleSide});
-            var pitchSegments = 60;
-            var radius = 16;
-            var elevationSegments = pitchSegments/2;
-//            for (var p = 0; p < pitchSegments; p++) {
-//                var pitch = Math.PI * 2 * p / pitchSegments ;
-//                for (var e = 0; e < elevationSegments; e++) {
-//                    var elevation = Math.PI  * ((e / elevationSegments)-0.5)
-//                    var particle = new THREE.Mesh(geometry2, materialGreen);
-//
-//
-//                    parentContainer.add(particle);
-//
-//                    var dest = new THREE.Vector3();
-//                    particle.position.z = dest.z = (Math.sin(pitch) * Math.cos(elevation)) * radius; //z pos in sphere
-//                    particle.position.x = dest.x = (Math.cos(pitch) * Math.cos(elevation)) * radius; //x pos in sphere
-//                    particle.position.y = dest.y = Math.sin(elevation) * radius; //y pos in sphere
-//
-//                }
-//            }
-            var m = geometry.vertices;
-            for (var i = 0; i < m.length; i++) {
-                var particle = new THREE.Mesh(geometry2, materialGreen);
-                particle.position.x = m[i].x
-                particle.position.y = m[i].y
-                particle.position.z = m[i].z
-                parentContainer.add(particle);
-                
-            }
+            var loader = new THREE.JSONLoader();
+            loader.load("http://threejs.org/examples/models/animated/horse.js", function (geometry) {
+                var material = new THREE.MeshBasicMaterial({
+                    transparent: true,
+                    color: 0x0000FF,
+                    opacity: 0.0,
+                });
+
+                mesh2 = new THREE.Mesh(geometry, material);
+
+
+                scene.add(mesh2);
+
+
+                material = new THREE.MeshBasicMaterial({
+                    transparent: false,
+                    color: 0x0000FF,
+                    opacity: 0.8,
+                });
+                var boxSize = 1;
+                var box = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+
+                var sphere = new THREE.SphereGeometry(boxSize);
+
+                var m = geometry.vertices;
+                for (var i = 0; i < m.length; i++) {
+                    var particle = new THREE.Mesh(sphere, material);
+                    particle.position.x = m[i].x
+                    particle.position.y = m[i].y
+                    particle.position.z = m[i].z
+                    parentContainer.add(particle);
+
+                }
+
+
+            });
 
 
 
 
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
-
-
 
 
             document.body.appendChild(renderer.domElement);
@@ -111,12 +107,15 @@
             document.body.appendChild(stats.domElement);
         }
 
+
         function animate() {
 
             requestAnimationFrame(animate);
 
-            mesh.rotation.x += 0.01;
-            mesh.rotation.y += 0.02;
+            if(mesh2){
+                mesh2.rotation.y += 0.02;
+                parentContainer.rotation.y += 0.02;
+            }
 
             renderer.render(scene, camera);
 
