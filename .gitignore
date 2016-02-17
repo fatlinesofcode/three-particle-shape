@@ -1,0 +1,8 @@
+.idea/
+*.iml
+.sass-cache/
+.DS_Store
+node_modules/*
+node_modules/*
+platforms/
+plugins/
